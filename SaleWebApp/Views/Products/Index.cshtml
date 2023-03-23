@@ -1,0 +1,68 @@
+﻿@using Newtonsoft.Json
+@model IEnumerable<BussinessObject.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    List<CartItem> cart = new List<CartItem>();
+    var a = Context.Session.GetString("cart");
+    if (a != null) cart = JsonConvert.DeserializeObject<List<CartItem>>(a);
+    bool isCartEmpty = (cart.Count() == 0) ? true : false;
+}
+@if (!isCartEmpty)
+{
+    <a asp-action="Index" asp-controller="Cart">
+        <i class="bi bi-cart">
+        Cart
+    </i>
+    </a>
+    <p>@cart.Count()</p>
+}
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitsInStock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitsInStock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td>
+                <a asp-action="Add" asp-controller="Cart" asp-route-ProductId="@item.ProductId">Add To Cart</a> |
+             
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

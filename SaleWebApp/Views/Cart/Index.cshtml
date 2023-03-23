@@ -1,0 +1,65 @@
+﻿@model IEnumerable<SaleWebApp.Models.CartItem>
+
+@{
+    ViewData["Title"] = "View";
+    var sum = Model.Sum(x => x.Quantity * x.UnitPrice);
+}
+
+<h1>View Cart</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <form method="post" asp-action="Update">
+                <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+                        <td>
+                <input type="number" value="@item.Quantity" name="quantity" min="1" max ="100"/>
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-productId="@item.ProductId">Delete</a>
+                </td>
+                <input type="hidden" name="productId" value="@item.ProductId"/>
+                <td>
+                    <input type="submit" value="Update"/>
+                </td>
+            </form>
+        </tr>
+}
+    </tbody>
+</table>
+<h3>Total: @sum </h3>
+<h3 style="color:red">@ViewData["mess"]</h3>
+<a class="btn btn-primary" asp-action="Buy">Buy</a>
