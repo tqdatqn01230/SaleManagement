@@ -79,7 +79,12 @@ namespace SaleWebApp.Controllers
         }
         public async Task<IActionResult> Buy()
         {
+
             var cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("cart"));
+            if (cart.Count() == 0)
+            {
+                return RedirectToAction("Index", new { mess = "Order Success" });
+            }
             foreach(var item in cart)
             {
                 var product = _context.Products.FirstOrDefault(x => x.ProductId == item.ProductId);
